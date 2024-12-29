@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reported Items</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #a8c0ff 10%, #3f8ec0 100%); /* Soft light blue gradient */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #2980B9;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #2980B9;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            background-color: #2980B9;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #3498DB;
+        }
+
+        /* Delete Button */
+        .button.delete {
+            background-color: #E74C3C;
+        }
+
+        .button.delete:hover {
+            background-color: #C0392B;
+        }
+
+        /* Back Button */
+        a.back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2ECC71;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        a.back-button:hover {
+            background-color: #27AE60;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>My Reported Items</h1>
+        <p>Here are all the items you've reported as lost. You can update or delete any of them as needed.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Reported On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (items.length > 0) { %>
+                    <% items.forEach(item => { %>
+                        <tr>
+                            <td><%= item.item_name %></td>
+                            <td><%= item.description %></td>
+                            <td><%= new Date(item.reported_on).toLocaleDateString() %></td>
+                            <td class="actions">
+                                <!-- Edit Button -->
+                                <a href="/update-lost-item/<%= item.item_id %>" class="button">Edit</a>
+                                <!-- Delete Button -->
+                                <a href="/delete-lost-item/<%= item.item_id %>" 
+                                    class="button delete"
+                                    onclick="return confirm('Are you sure you want to delete this item?');">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">No items found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <a href="/home" class="back-button">Back to Home</a>
+    </div>
+
+</body>
+</html>

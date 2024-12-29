@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f9;
+    }
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    p {
+        text-align: center;
+        font-size: 1.2em;
+        color: #555;
+    }
+    a {
+        display: inline-block;
+        margin: 20px 0;
+        text-decoration: none;
+        color: white;
+        background-color: #007BFF;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    a:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<h2>Potential Matches</h2>
+
+<% if (matches && matches.length > 0) { %>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Found On</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% matches.forEach(item => { %>
+                <tr>
+                    <td><%= item.item_name %></td>
+                    <td><%= item.description %></td>
+                    <td><%= new Date(item.found_on).toLocaleDateString() %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <p>No matches found for your reported items.</p>
+<% } %>
+
+<a href="/">Back to Home</a>
+
+<%- include('partials/footer') %>

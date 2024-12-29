@@ -178,7 +178,8 @@ app.post('/submit-lost-item', upload.single('item_picture'), (req, res) => {
     const image_path = req.file ? `/uploads/${req.file.filename}` : null;  // Get the image path from the uploaded file
 
     // SQL query to insert the lost item into the Lost_Items table
-    const sql = 'INSERT INTO Lost_Items (user_id, item_name, description, image_path) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO Lost_Items (user_id, item_name, description, image_path, reported_on) VALUES (?, ?, ?, ?, NOW())';
+
     db.query(sql, [req.session.user_id, item_name, item_description, image_path], (err, result) => {
         if (err) {
             console.error('Error inserting lost item:', err);
@@ -194,18 +195,7 @@ app.post('/submit-lost-item', upload.single('item_picture'), (req, res) => {
     });
 });
 
-// Route for Logout
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            return res.status(500).send('Failed to logout');
-        }
 
-        // Redirect to login page after successful logout
-        res.redirect('/login');
-    });
-});
 
 // Route for Search Lost Items Page (GET method)
 app.get('/search-lost', (req, res) => {
@@ -240,6 +230,91 @@ app.post('/search-lost', (req, res) => {
 
         // Render search page with results
         res.render('search-lost', { results: results, errorMessage: null });
+    });
+});
+// Route to display items reported by the logged-in user
+app.get('/my-lost-items', (req, res) => {
+    if (!req.session.user_id) {
+        return res.redirect('/login'); // Redirect to login if not logged in
+    }
+
+    const sql = 'SELECT * FROM Lost_Items WHERE user_id = ?';
+    db.query(sql, [req.session.user_id], (err, results) => {
+        if (err) {
+            console.error('Error fetching lost items:', err);
+            return res.status(500).send('An error occurred while fetching your items.');
+        }
+
+        // Render the 'my-lost-items' view and pass the retrieved items
+        res.render('my-lost-items', { items: results });
+    });
+});
+// Route to render the update form
+app.get('/update-lost-item/:id', (req, res) => {
+    const itemId = req.params.id;
+    const userId = req.session.user_id; // Ensure the user is logged in
+
+    const sql = 'SELECT * FROM Lost_Items WHERE item_id = ? AND user_id = ?';
+    db.query(sql, [itemId, userId], (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+            res.render('update-lost-item', { item: result[0] });
+        } else {
+            res.redirect('/my-lost-items');
+        }
+    });
+});
+
+// Route to handle the update request
+app.post('/update-lost-item/:id', (req, res) => {
+    const itemId = req.params.id;
+    const userId = req.session.user_id;
+    const { item_name, description } = req.body;
+
+    const sql = 'UPDATE Lost_Items SET item_name = ?, description = ? WHERE item_id = ? AND user_id = ?';
+    db.query(sql, [item_name, description, itemId, userId], (err, result) => {
+        if (err) throw err;
+        res.redirect('/my-lost-items');
+    });
+});
+// Delete Lost Item
+app.get('/delete-lost-item/:id', (req, res) => {
+    const itemId = req.params.id;
+    const userId = req.session.user_id; // Assuming user_id is stored in the session
+
+    const query = 'DELETE FROM Lost_Items WHERE item_id = ? AND user_id = ?';
+    db.query(query, [itemId, userId], (err, result) => {
+        if (err) {
+            console.error('Error deleting item:', err);
+            res.status(500).send('Error deleting the item');
+        } else {
+            console.log('Item deleted successfully');
+            res.redirect('/my-lost-items');
+        }
+    });
+});
+// Route for Logout
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Failed to logout');
+        }
+
+        // Redirect to login page after successful logout
+        res.redirect('/login');
+    });
+});
+// Route for Logout (POST request)
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Failed to logout');
+        }
+
+        // Redirect to login page after successful logout
+        res.redirect('/login');
     });
 });
 

@@ -3,34 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Virtual Lost and Found</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and General Layout */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f4f7fb; /* Light greyish background */
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 350px; /* Increased width */
+            background-color: #2C3E50; /* Deep Blue color */
+            color: white;
+            padding: 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            z-index: 100;
+            overflow-y: auto; /* Ensures sidebar content is scrollable */
+        }
+
+        .sidebar h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .sidebar p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+        /* Action Boxes */
+        .action-box {
+            background-color: #34495E; /* Darker Blue for action box */
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            min-height: 250px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Added gap between buttons */
+        }
+
+        .sidebar a, .sidebar button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ECF0F1; /* Light background for buttons */
+            color: #2C3E50; /* Deep Blue Text */
+            text-align: center;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover, .sidebar button:hover {
+            background-color: #BDC3C7;
+            color: white;
+        }
+
+        /* Content Area */
+        .content {
+            margin-left: 370px; /* Space for sidebar */
+            padding: 30px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .content h2 {
+            margin-top: 0;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-top: 15px;
+        }
+
+        /* Information Section */
+        .info-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .info-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .info-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #2C3E50;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding-bottom: 20px;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            .sidebar button, .sidebar a {
+                width: auto;
+                padding: 10px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Virtual Lost and Found</h1>
-    <p>Welcome, <%= username %>!</p>
 
-    <% if (success) { %>
-        <div style="color: green;">
-            <%= success %>
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <h1>Virtual Lost and Found</h1>
+        <p>Welcome, <%= username %></p>
+
+        <% if (success) { %>
+            <div style="color: green; margin-bottom: 20px;">
+                <%= success %>
+            </div>
+        <% } %>
+
+        <!-- Action Section -->
+        <div class="action-box">
+            <form action="/report-lost" method="GET">
+                <button type="submit">Report a Lost Item</button>
+            </form>
+            <form action="/search-lost" method="GET">
+                <button type="submit">Search for Lost Items</button>
+            </form>
+            <a href="/my-lost-items">View My Reported Items</a>
+            <form action="/logout" method="POST">
+                <button type="submit">Logout</button>
+            </form>
         </div>
-    <% } %>
+    </div>
 
-    <!-- Report Lost Item Button -->
-    <h2>Report Lost Item</h2>
-    <form action="/report-lost" method="GET">
-        <button type="submit">Report a Lost Item</button>
-    </form>
+    <!-- Right Content Area -->
+    <div class="content">
+        <h2>Safety & Responsibilities</h2>
+        <div class="info-section">
+            <h3>How to Use the Virtual Lost and Found</h3>
+            <p>This platform helps you report lost items, search for lost items, and view your reported items. Please keep the following tips in mind:</p>
+            <ul>
+                <li><strong>Be Honest:</strong> Provide accurate information about lost or found items to help others.</li>
+                <li><strong>Be Safe:</strong> Meet in public places if exchanging items, for your own safety.</li>
+                <li><strong>Be Responsible:</strong> Take care of items you find and ensure they are returned to the rightful owner.</li>
+                <li><strong>Follow the Law:</strong> Always comply with local laws when reporting or retrieving lost items.</li>
+                <li><strong>Report Immediately:</strong> If you find an item, report it as soon as possible to help others track it down.</li>
+                <li><strong>Stay Vigilant:</strong> Report any suspicious activities to the authorities to keep the community safe.</li>
+            </ul>
+        </div>
 
-    <!-- Search Lost Item Button -->
-    <h2>Search Lost Items</h2>
-    <form action="/search-lost" method="GET">
-        <button type="submit">Search for Lost Items</button>
-    </form>
+        <div class="info-section">
+            <h3>More Information</h3>
+            <p>If you're looking for lost items, you can easily browse through the reported items or search by categories. Here are some additional tips:</p>
+            <ul>
+                <li><strong>Categories:</strong> Lost items are categorized for easier searching, such as electronics, clothing, and documents.</li>
+                <li><strong>Photos:</strong> Upload clear pictures of the lost or found item for better identification.</li>
+                <li><strong>Notify the Owner:</strong> If you find an item, try to notify the owner immediately to ensure a smooth return.</li>
+                <li><strong>Timely Updates:</strong> Keep the platform updated with the latest information on any item you find or lose.</li>
+            </ul>
+        </div>
 
-    <!-- Logout Button -->
-    <h2>Logout</h2>
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
+        <div class="info-section">
+            <h3>Lost Item Reporting</h3>
+            <p>When reporting a lost item, make sure to provide as many details as possible, such as the item’s condition, location, and time of loss. The more information you provide, the easier it is for others to help you.</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Virtual Lost and Found | All Rights Reserved</p>
+        </footer>
+    </div>
+
 </body>
 </html>

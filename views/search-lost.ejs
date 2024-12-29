@@ -4,37 +4,200 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Lost Items</title>
-    <link href="styles.css" rel="stylesheet">
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #a8c0ff 10%, #3f8ec0 100%); /* Soft light blue gradient */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            padding: 0 20px;
+            overflow: auto;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #2980B9;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Input Fields and Button */
+        form {
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #BDC3C7;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3498DB;
+            outline: none;
+        }
+
+        button {
+            background-color: #2ECC71;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #27AE60;
+        }
+
+        /* Results Section */
+        h2 {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            color: #2980B9;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #F9F9F9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        ul li img {
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+
+        ul li strong {
+            color: #2980B9;
+            font-size: 1.2rem;
+        }
+
+        ul li p {
+            color: #555;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        /* Error message styling */
+        .error-message {
+            background-color: #E74C3C;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Link Styling */
+        a {
+            color: #2980B9;
+            font-size: 1rem;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #1A5276;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Search Lost Items</h1>
 
-    <form action="/search-lost" method="POST">
-        <input type="text" name="searchQuery" placeholder="Enter item name or description" required>
-        <button type="submit">Search</button>
-    </form>
+    <div class="container">
+        <h1>Search Lost Items</h1>
 
-    <% if (errorMessage) { %>
-        <div style="color: red;">
-            <%= errorMessage %>
-        </div>
-    <% } %>
+        <!-- Search Form -->
+        <form action="/search-lost" method="POST">
+            <input type="text" name="searchQuery" placeholder="Enter item name or description" required>
+            <button type="submit">Search</button>
+        </form>
 
-    <% if (results && results.length > 0) { %>
-        <h2>Search Results</h2>
-        <ul>
-            <% results.forEach(item => { %>
-                <li>
-                    <strong><%= item.item_name %></strong><br>
-                    <%= item.description %><br>
-                    <img src="<%= item.image_path %>" alt="<%= item.item_name %>" width="100">
+        <!-- Error message -->
+        <% if (errorMessage) { %>
+            <div class="error-message">
+                <%= errorMessage %>
+            </div>
+        <% } %>
 
+        <!-- Search Results -->
+        <% if (results && results.length > 0) { %>
+            <h2>Search Results</h2>
+            <ul>
+                <% results.forEach(item => { %>
+                    <li>
+                        <img src="<%= item.image_path %>" alt="<%= item.item_name %>" width="100">
+                        <div>
+                            <strong><%= item.item_name %></strong><br>
+                            <p><%= item.description %></p>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else if (results && results.length === 0) { %>
+            <p>No items found matching your search.</p>
+        <% } %>
 
-                </li>
-            <% }); %>
-        </ul>
-    <% } else if (results && results.length === 0) { %>
-        <p>No items found matching your search.</p>
-    <% } %>
+        <a href="/home">Back to Home</a>
+    </div>
+
 </body>
 </html>
