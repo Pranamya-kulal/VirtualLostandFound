@@ -42,6 +42,9 @@ db.connect((err) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve the "uploads" folder statically so images can be accessed via URLs
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Set up EJS
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
@@ -203,16 +206,40 @@ app.get('/logout', (req, res) => {
         res.redirect('/login');
     });
 });
-// Route for logging out
-app.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
+
+// Route for Search Lost Items Page (GET method)
+app.get('/search-lost', (req, res) => {
+    if (!req.session.user_id) {
+        return res.redirect('/login');  // Redirect to login if not logged in
+    }
+
+    // Render search page with no results initially
+    res.render('search-lost', { results: [], errorMessage: null });
+});
+
+// Handle Lost Item Search (POST method)
+app.post('/search-lost', (req, res) => {
+    const { searchQuery } = req.body;
+
+    if (!searchQuery) {
+        return res.render('search-lost', { results: [], errorMessage: 'Please enter a search query.' });
+    }
+
+    // SQL query to search for lost items by name or description
+    const sql = 'SELECT * FROM Lost_Items WHERE item_name LIKE ? OR description LIKE ?';
+    db.query(sql, [`%${searchQuery}%`, `%${searchQuery}%`], (err, results) => {
         if (err) {
-            console.error('Error destroying session:', err);
-            return res.status(500).send('Failed to logout');
+            console.error('Error searching for lost items:', err);
+            return res.status(500).send('Error searching for lost items');
         }
 
-        // Redirect to login page after successful logout
-        res.redirect('/login');
+        // If items are found, render the search results page
+        if (results.length === 0) {
+            return res.render('search-lost', { results: [], errorMessage: 'No items found matching your search.' });
+        }
+
+        // Render search page with results
+        res.render('search-lost', { results: results, errorMessage: null });
     });
 });
 

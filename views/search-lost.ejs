@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Lost Items</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Search Lost Items</h1>
+
+    <form action="/search-lost" method="POST">
+        <input type="text" name="searchQuery" placeholder="Enter item name or description" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <% if (errorMessage) { %>
+        <div style="color: red;">
+            <%= errorMessage %>
+        </div>
+    <% } %>
+
+    <% if (results && results.length > 0) { %>
+        <h2>Search Results</h2>
+        <ul>
+            <% results.forEach(item => { %>
+                <li>
+                    <strong><%= item.item_name %></strong><br>
+                    <%= item.description %><br>
+                    <img src="<%= item.image_path %>" alt="<%= item.item_name %>" width="100">
+
+
+                </li>
+            <% }); %>
+        </ul>
+    <% } else if (results && results.length === 0) { %>
+        <p>No items found matching your search.</p>
+    <% } %>
+</body>
+</html>
