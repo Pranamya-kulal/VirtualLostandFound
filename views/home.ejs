@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the Virtual Lost and Found</h1>
+    <p>Welcome, <%= username %>!</p>
+
+    <% if (success) { %>
+        <div style="color: green;">
+            <%= success %>
+        </div>
+    <% } %>
+
+    <!-- Report Lost Item Button -->
+    <h2>Report Lost Item</h2>
+    <form action="/report-lost" method="GET">
+        <button type="submit">Report a Lost Item</button>
+    </form>
+
+    <!-- Logout Button -->
+    <h2>Logout</h2>
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>

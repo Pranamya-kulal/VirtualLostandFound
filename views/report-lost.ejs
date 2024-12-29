@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Lost Item</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Report a Lost Item</h1>
+
+    <!-- Error message section -->
+    <% if (errorMessage) { %>
+        <div style="color: red;">
+            <%= errorMessage %>
+        </div>
+    <% } %>
+
+    <!-- Form for reporting lost item -->
+    <form action="/submit-lost-item" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="item_name">Item Name:</label>
+            <input type="text" name="item_name" id="item_name" value="<%= item_name %>" required>
+        </div>
+
+        <div>
+            <label for="item_description">Item Description:</label>
+            <textarea name="item_description" id="item_description" required><%= item_description %></textarea>
+        </div>
+
+        <div>
+            <label for="item_picture">Upload Picture:</label>
+            <input type="file" name="item_picture" id="item_picture" required>
+        </div>
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <br>
+    <a href="/home">Back to Home</a>
+</body>
+</html>
