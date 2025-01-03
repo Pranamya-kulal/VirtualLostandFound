@@ -15,51 +15,42 @@
         /* Body Styling */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2C3E50; /* Blue background */
-            color: white; /* Text color change to white */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://t4.ftcdn.net/jpg/08/97/11/03/240_F_897110304_UzSVoLcNBrra1cwdh9dK5Ma8pSw5Qope.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: rgb(5, 5, 5);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            padding: 0 20px;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
         }
 
         /* Form Container */
         .form-container {
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9); /* Lighter background */
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px;
             border-radius: 12px;
             max-width: 600px;
             width: 100%;
+            height: 90%;
+            overflow-y: auto;
             text-align: center;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            border-left: 5px solid #3498DB;
-            border-right: 5px solid #3498DB;
         }
 
         h1 {
             font-size: 2.5rem;
-            color: #2980B9; /* Blue color for header */
             margin-bottom: 20px;
             font-weight: bold;
         }
 
-        /* Error message styling */
-        .error-message {
-            background-color: #E74C3C;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-        }
-
         /* Input Fields */
-        input[type="text"],
-        input[type="file"],
-        textarea {
+        .input-field {
             width: 100%;
             padding: 12px;
             margin-top: 8px;
@@ -67,35 +58,45 @@
             border: 1px solid #BDC3C7;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            color: #34495E;
         }
 
-        input[type="text"]:focus,
-        input[type="file"]:focus,
-        textarea:focus {
-            border-color: #3498DB;
+        .input-field:focus {
+            border-color: #2980B9;
             outline: none;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.8);
         }
 
-        /* Submit Button */
+        textarea {
+            height: 150px;
+        }
+
+        /* Button Styling */
         button {
-            background-color: #2ECC71;
+            background-color: #2C3E50; /* Dark Blue */
             color: white;
             padding: 15px 25px;
             border: none;
             border-radius: 8px;
             font-size: 1.2rem;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
-            background-color: #27AE60;
+            background-color: #34495E; /* Slightly darker shade for hover */
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(44, 62, 80, 0.5);
         }
 
-        /* Link Styling */
+        button:active {
+            background-color: #2C3E50;
+            box-shadow: 0 4px 8px rgba(44, 62, 80, 0.8);
+        }
+
+        /* Back Link Styling */
         a {
-            color: #3498DB; /* Blue color for link */
+            color: #3498DB;
             font-size: 1rem;
             text-decoration: none;
             margin-top: 20px;
@@ -111,9 +112,62 @@
         @media (max-width: 768px) {
             .form-container {
                 padding: 20px;
+                height: auto;
+            }
+
+            textarea {
+                height: 200px;
             }
         }
 
+        /* File Input Style */
+        input[type="file"] {
+            border: 1px solid #BDC3C7;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            border-color: #3498DB;
+            background-color: #f1f1f1;
+        }
+
+        /* Placeholder Styling for Inputs */
+        ::placeholder {
+            color: #7F8C8D;
+            font-style: italic;
+        }
+
+        /* Glowing Mouse Trail */
+        .trail {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(44, 62, 80, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            animation: trailAnimation 0.8s ease-out infinite;
+        }
+
+        /* Glowing Effect */
+        @keyframes trailAnimation {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -121,28 +175,21 @@
     <div class="form-container">
         <h1>Report a Lost Item</h1>
 
-        <!-- Error Message -->
-        <% if (errorMessage) { %>
-            <div class="error-message">
-                <%= errorMessage %>
-            </div>
-        <% } %>
-
         <!-- Form -->
         <form action="/submit-lost-item" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="item_name">Item Name:</label>
-                <input type="text" name="item_name" id="item_name" value="<%= item_name %>" required placeholder="Enter item name">
+                <input type="text" name="item_name" id="item_name" required class="input-field" placeholder="e.g., iPhone 13">
             </div>
 
             <div>
                 <label for="item_description">Item Description:</label>
-                <textarea name="item_description" id="item_description" required placeholder="Provide a detailed description of the item"><%= item_description %></textarea>
+                <textarea name="item_description" id="item_description" required class="input-field" placeholder="e.g., Black iPhone 13 with a cracked screen. Contact via email example@domain.com or phone at 123-456-7890"></textarea>
             </div>
 
             <div>
                 <label for="item_picture">Upload Picture:</label>
-                <input type="file" name="item_picture" id="item_picture" required>
+                <input type="file" name="item_picture" id="item_picture" required class="input-field">
             </div>
 
             <div>
@@ -153,6 +200,31 @@
         <!-- Back to Home Link -->
         <a href="/home">Back to Home</a>
     </div>
+
+    <script>
+        // Mouse Trail Effect
+        const trailArray = [];
+        
+        document.addEventListener('mousemove', (e) => {
+            // Create the trail element
+            const trail = document.createElement('div');
+            trail.classList.add('trail');
+            document.body.appendChild(trail);
+
+            // Position the trail element at the mouse coordinates
+            trail.style.left = `${e.pageX}px`; // Center the trail circle
+            trail.style.top = `${e.pageY}px`;
+
+            // Store the trail in an array to animate
+            trailArray.push(trail);
+
+            // Remove the trail element after animation
+            setTimeout(() => {
+                trail.remove();
+                trailArray.shift(); // Remove from the array
+            }, 800); // Time must match animation duration
+        });
+    </script>
 
 </body>
 </html>

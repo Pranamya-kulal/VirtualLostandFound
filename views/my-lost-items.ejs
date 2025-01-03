@@ -5,121 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Reported Items</title>
     <style>
-        /* Body Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2C3E50; /* Blue background */
-            color: #000; /* Black text color for better visibility */
+        /* Global Reset */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://t4.ftcdn.net/jpg/08/97/11/03/240_F_897110304_UzSVoLcNBrra1cwdh9dK5Ma8pSw5Qope.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            height: 100vh;
-            overflow: auto;
+            min-height: 100vh;
         }
 
         /* Main Container */
         .container {
             width: 100%;
             max-width: 900px;
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque white for container */
+            background: rgba(255, 255, 255, 0.4); /* Clean white with slight transparency */
+            border-radius: 15px;
             padding: 30px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            text-align: center;
+            box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
             font-size: 2.5rem;
-            color: #2980B9; /* Blue color for header */
-            margin-bottom: 30px;
+            color: #1A5276;
+            margin-bottom: 20px;
+            text-align: center;
             font-weight: bold;
         }
 
         p {
             font-size: 1.1rem;
-            color: #000; /* Black text color for paragraphs */
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            color: #e7e4e4;
+            text-align: center;
             margin-bottom: 30px;
         }
 
-        table, th, td {
-            border: 1px solid #ddd;
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+            margin-bottom: 20px;
         }
 
-        th, td {
+        table th, table td {
+            padding: 15px;
             text-align: left;
-            padding: 12px;
         }
 
         th {
-            background-color: #2980B9;
-            color: #fff;
+            background-color: #1A5276;
+            color: white;
+            text-transform: uppercase;
+            font-size: 1rem;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f4f8fb;
         }
 
-        .actions {
-            display: flex;
-            gap: 10px;
+        tr:nth-child(odd) {
+            background-color: #fff;
         }
 
-        .button {
-            background-color: #2980B9;
-            color: white;
-            padding: 8px 12px;
-            text-decoration: none;
-            border-radius: 4px;
-            text-align: center;
+        tr:hover {
+            background-color: #e8f1f7;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            color: #555;
+        }
+
+        /* Action Buttons */
+        .actions a {
             display: inline-block;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-right: 10px;
+            color: white;
+            transition: all 0.3s ease;
         }
 
-        .button:hover {
+        .actions .edit {
             background-color: #3498DB;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Delete Button */
-        .button.delete {
+        .actions .edit:hover {
+            background-color: #21618C;
+            transform: translateY(-2px);
+        }
+
+        .actions .delete {
             background-color: #E74C3C;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
 
-        .button.delete:hover {
+        .actions .delete:hover {
             background-color: #C0392B;
+            transform: translateY(-2px);
         }
 
         /* Back Button */
-        a.back-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #2ECC71;
+        .back-button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 12px 20px;
+            background-color: #21618C;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 1.2rem;
+            border-radius: 8px;
             text-align: center;
-            transition: background-color 0.3s ease;
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 200px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        a.back-button:hover {
-            background-color: #27AE60;
+        .back-button:hover {
+            background-color: #474da7;
+            transform: translateY(-3px) scale(1.05);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
             h1 {
                 font-size: 2rem;
             }
@@ -131,11 +168,11 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>My Reported Items</h1>
-        <p>Here are all the items you've reported as lost. You can update or delete any of them as needed.</p>
+        <p>Here are the items you have reported. You can edit or delete any of them.</p>
 
+        <!-- Reported Items Table -->
         <table>
             <thead>
                 <tr>
@@ -153,11 +190,9 @@
                             <td><%= item.description %></td>
                             <td><%= new Date(item.reported_on).toLocaleDateString() %></td>
                             <td class="actions">
-                                <!-- Edit Button -->
-                                <a href="/update-lost-item/<%= item.item_id %>" class="button">Edit</a>
-                                <!-- Delete Button -->
+                                <a href="/update-lost-item/<%= item.item_id %>" class="edit">Edit</a>
                                 <a href="/delete-lost-item/<%= item.item_id %>" 
-                                    class="button delete"
+                                    class="delete" 
                                     onclick="return confirm('Are you sure you want to delete this item?');">
                                     Delete
                                 </a>
@@ -166,14 +201,14 @@
                     <% }) %>
                 <% } else { %>
                     <tr>
-                        <td colspan="4" style="text-align: center;">No items found.</td>
+                        <td colspan="4" style="text-align: center;">No items reported yet.</td>
                     </tr>
                 <% } %>
             </tbody>
         </table>
 
+        <!-- Back Button -->
         <a href="/home" class="back-button">Back to Home</a>
     </div>
-
 </body>
 </html>

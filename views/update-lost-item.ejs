@@ -5,62 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Lost Item</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+        /* Global Reset */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: #fff;
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://t4.ftcdn.net/jpg/08/97/11/03/240_F_897110304_UzSVoLcNBrra1cwdh9dK5Ma8pSw5Qope.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
         }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        /* Fade-In Effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Heading */
         h1 {
             text-align: center;
-            color: #333;
+            color: #2980B9;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
+
+        /* Form Styling */
         form {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
         label {
             font-weight: bold;
+            color: #333;
         }
+
         input, textarea {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
         textarea {
             resize: none;
         }
+
+        /* Button Styling */
         button {
-            background-color: #007bff;
+            background-color: #3498DB;
             color: #fff;
             border: none;
             padding: 10px 15px;
             font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
+
         button:hover {
-            background-color: #0056b3;
+            background-color: #21618C;
+            transform: translateY(-2px);
         }
+
+        /* Back Link Styling */
         a {
             display: inline-block;
             text-align: center;
-            color: #007bff;
+            color: #3498DB;
             margin-top: 10px;
             text-decoration: none;
+            font-weight: bold;
         }
+
         a:hover {
             text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>

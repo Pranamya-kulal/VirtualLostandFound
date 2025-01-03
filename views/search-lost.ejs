@@ -15,26 +15,19 @@
         /* Body Styling */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2C3E50; /* Blue background */
-            color: white; /* Text color change to white */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            height: 100vh;
-            padding: 0 20px;
-            overflow: auto;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://t4.ftcdn.net/jpg/08/97/11/03/240_F_897110304_UzSVoLcNBrra1cwdh9dK5Ma8pSw5Qope.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         /* Main Container */
         .container {
             width: 100%;
-            max-width: 800px;
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         h1 {
@@ -42,36 +35,39 @@
             color: #2980B9; /* Blue color for header */
             margin-bottom: 20px;
             font-weight: bold;
+            text-align: center;
         }
 
-        /* Input Fields and Button */
+        /* Search Form */
         form {
             margin-bottom: 30px;
+            text-align: center;
+            position: relative;
         }
 
         input[type="text"] {
-            width: 100%;
+            width: 80%;
+            max-width: 600px;
             padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 15px;
             border: 1px solid #BDC3C7;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
         }
 
         input[type="text"]:focus {
             border-color: #3498DB;
             outline: none;
+            background-color: #EAF2F8; /* Light blue focus */
         }
 
         button {
             background-color: #2ECC71;
             color: white;
-            padding: 15px 25px;
+            padding: 12px 20px;
+            margin-left: 10px;
             border: none;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -80,82 +76,102 @@
             background-color: #27AE60;
         }
 
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #3498DB;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         /* Results Section */
-        h2 {
-            margin-top: 20px;
-            font-size: 1.8rem;
-            color: #2980B9; /* Blue color for the results section */
-            margin-bottom: 20px;
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            background-color: #F9F9F9;
-            padding: 15px;
-            margin-bottom: 20px;
+        .item-container {
+            background-color: white;
+            color: black;
             border-radius: 8px;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .item-container img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .item-info {
+            text-align: center;
+        }
+
+        .item-info strong {
+            font-size: 1.2rem;
+            color: #2980B9;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .item-info p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* Back to Home */
+        .back-to-home {
             display: flex;
             align-items: center;
-        }
-
-        ul li img {
-            border-radius: 8px;
-            margin-right: 20px;
-        }
-
-        ul li strong {
-            color: #2980B9;
-            font-size: 1.2rem;
-        }
-
-        ul li p {
-            color: #555;
-            font-size: 1rem;
-            margin-top: 5px;
-        }
-
-        /* Error message styling */
-        .error-message {
-            background-color: #E74C3C;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            justify-content: flex-start;
             margin-bottom: 20px;
-        }
-
-        /* Link Styling */
-        a {
-            color: #2980B9; /* Blue color for link */
-            font-size: 1rem;
+            color: white;
             text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
+            font-size: 1.2rem;
             transition: color 0.3s ease;
         }
 
-        a:hover {
-            color: #1A5276;
+        .back-to-home i {
+            font-size: 1.5rem;
+            margin-right: 8px;
+        }
+
+        .back-to-home:hover {
+            color: #3498DB;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
+            input[type="text"] {
+                width: 100%;
             }
 
-            h1 {
-                font-size: 2rem;
+            button {
+                width: 100%;
+                margin-top: 10px;
             }
 
-            h2 {
-                font-size: 1.5rem;
+            .back-to-home {
+                justify-content: center;
             }
         }
     </style>
@@ -163,41 +179,46 @@
 <body>
 
     <div class="container">
+        <!-- Back to Home -->
+        <a href="/home" class="back-to-home">
+            <i>🏠</i> Back to Home
+        </a>
+
         <h1>Search Lost Items</h1>
 
         <!-- Search Form -->
-        <form action="/search-lost" method="POST">
+        <form id="searchForm" action="/search-lost" method="POST">
             <input type="text" name="searchQuery" placeholder="Enter item name or description" required>
             <button type="submit">Search</button>
+            <div class="loading-spinner" id="spinner"></div>
         </form>
-
-        <!-- Error message -->
-        <% if (errorMessage) { %>
-            <div class="error-message">
-                <%= errorMessage %>
-            </div>
-        <% } %>
 
         <!-- Search Results -->
         <% if (results && results.length > 0) { %>
-            <h2>Search Results</h2>
-            <ul>
+            <div class="results-container">
                 <% results.forEach(item => { %>
-                    <li>
-                        <img src="<%= item.image_path %>" alt="<%= item.item_name %>" width="100">
-                        <div>
-                            <strong><%= item.item_name %></strong><br>
+                    <div class="item-container">
+                        <img src="<%= item.image_path %>" alt="<%= item.item_name %>">
+                        <div class="item-info">
+                            <strong><%= item.item_name %></strong>
                             <p><%= item.description %></p>
                         </div>
-                    </li>
+                    </div>
                 <% }); %>
-            </ul>
+            </div>
         <% } else if (results && results.length === 0) { %>
-            <p>No items found matching your search.</p>
+            <p style="text-align: center; color: white;">No items found matching your search.</p>
         <% } %>
-
-        <a href="/home">Back to Home</a>
     </div>
+
+    <script>
+        const form = document.getElementById('searchForm');
+        const spinner = document.getElementById('spinner');
+
+        form.addEventListener('submit', () => {
+            spinner.style.display = 'block';
+        });
+    </script>
 
 </body>
 </html>
