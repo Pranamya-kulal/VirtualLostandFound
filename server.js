@@ -25,7 +25,7 @@ const upload = multer({ storage: storage });
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '4sf22cs139', // Update with your password
+    password: '********', // Update with your password
     database: 'VirtualLostAndFound' // Replace with your actual database name
 });
 
